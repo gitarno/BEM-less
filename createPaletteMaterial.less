@@ -3,7 +3,19 @@
  * http://jsbin.com/gaxome/5/edit?html,css,output
  * Para buscar algum destes tons
  */
-@Red:#FFEBEE,#FFCDD2,#EF9A9A,#E57373,#EF5350,#F44336,#E53935,#D32F2F,#C62828,#B71C1C;
+@Red:
+	#FFEBEE,
+	#FFCDD2,
+	#EF9A9A,
+	#E57373,
+	#EF5350,
+	#F44336,
+	#E53935,
+	#D32F2F,
+	#C62828,
+	#B71C1C
+;
+
 @Pink:#FCE4EC,#F8BBD0,#F48FB1,#F06292,#EC407A,#E91E63,#D81B60,#C2185B,#AD1457,#880E4F;
 @Purple:,#F3E5F5,#E1BEE7,#CE93D8,#BA68C8,#AB47BC,#9C27B0,#8E24AA,#7B1FA2,#6A1B9A,#4A148C;
 @Deep_Purple:#EDE7F6,#D1C4E9,#B39DDB,#9575CD,#7E57C2,#673AB7,#5E35B1,#512DA8,#4527A0,#311B92;
@@ -22,10 +34,15 @@
 @Brown: #EFEBE9,#D7CCC8,#BCAAA4,#A1887F,#8D6E63,#795548,#6D4C41,#5D4037,#4E342E,#3E2723;
 @Grey: #FAFAFA,#F5F5F5,#EEEEEE,#E0E0E0,#BDBDBD,#9E9E9E,#757575,#616161,#424242,#212121;
 @Blue_Grey: #ECEFF1,#CFD8DC,#B0BEC5,#90A4AE,#78909C,#607D8B,#546E7A,#455A64,#37474F,#263238;
+
+@meutema: #123, #321;
+
 @default: @Orange;
 
-testando{
-	teste: extract(@Red,1);
+
+.amostra{
+	propriedadeA: extract(@Red,1);
+	propriedadeB: extract(@Red,2);
 }
 
 .createPalette("default");
@@ -38,10 +55,18 @@ testando{
 	/* Verificando a quantidade de cores o tema possui para criar a escala */
 	@totalDeCores: length(@cores);
 	//Criando o tema 	
-	.@{nameTheme} {
-		//Criando os tons
-		.tons(@totalDeCores);
+	.text (@theme) when (@theme = "default") {
+		//Criando os tons globais
+			.tons(@totalDeCores);
 	}	
+	.text (@theme) when not (@theme = "default") {
+		.@{nameTheme} {
+		 	//Criando os tons
+			.tons(@totalDeCores);
+		}	
+	}
+	.text(@theme);
+	
 	/**
 	 * TONS 	Responsavel por criar os tons de acordo com cada tema
 	 * @param  {[Number]} @n       Numero de repetições
@@ -62,16 +87,14 @@ testando{
 	    @g: green(@color);
 		@b: blue(@color);	       
 		
-		
-
-
 		.tom-@{numeroTom}{
-			//background-color: rgb( ceil(@r),	ceil(@g),	ceil(@b));
-			//.text (@color);
-			/* RGB e HSV */
-			orgb: ceil(@r) ceil(@g)	ceil(@b);
-			@tempohsv: ceil(@hueCor) ceil(@saturationCor)	ceil(@lightCor);
-			ohsv: replace(replace(~"@{tempohsv}","%","","gi")," ","	","gi")
+			background-color: @color;
+			.text (@color);
+		}
+		.tom-@{numeroTom}:hover,
+		.tom-@{numeroTom}:focus{
+			background-color: lighten(@color, 5%);
+			.text (lighten(@color, 10%));
 		}
 		
 		.text (@a) when (lightness(@a) >= 70%) {
